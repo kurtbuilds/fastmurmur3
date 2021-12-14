@@ -2,7 +2,7 @@ mod murmur3rs;
 
 pub use murmur3rs::{hash, murmur3_x64_128};
 
-#[cfg(feature = "bench")]
+#[cfg(feature = "murmur3c")]
 pub mod murmur3c;
 
 
@@ -12,16 +12,16 @@ mod test {
     use rand::{Rng, RngCore};
 
     static SOURCE: &'static [u8] = b"The quick brown fox jumps over the lazy dog";
-    //
-    // #[test]
-    // fn test_rs_c_agree() {
-    //     let a = murmur3rs::murmur3_x64_128(SOURCE, 0);
-    //     let b = murmur3c::hash(SOURCE);
-    //     assert_eq!(a, b);
-    // }
 
     #[test]
-    fn test_fuzzing() {
+    fn test_agreement_basic() {
+        let a = murmur3rs::murmur3_x64_128(SOURCE, 0);
+        let b = murmur3c::hash(SOURCE);
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn test_agreement_fuzzed() {
         let mut rng = rand::thread_rng();
 
         for i in 0..10000 {

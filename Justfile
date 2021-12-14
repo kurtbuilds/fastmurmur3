@@ -23,14 +23,14 @@ install:
     cargo install --path .
 
 test *args: build-murmur3c
-    cargo test {{args}}
+    cargo test {{args}} --features murmur3c
 
 check:
     cargo check
 alias c := check
 
 bench:
-    cargo criterion --features bench
+    cargo criterion --features murmur3c
 
 fix:
     cargo clippy --fix

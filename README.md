@@ -21,9 +21,12 @@
 
 # Fastmurmur3
 
-Murmur3 is a fast, non-cryptographic hash function.
+Murmur3 is a fast, non-cryptographic hash function. Fastmurmur3 is, in my testing, the fastest implementation of Murmur3.
 
 # Usage
+
+    let bytes: &[u8] = b"hello world";
+    let x: u128 = fastmurmur3::hash(bytes);
 
 # Installation
 
@@ -31,39 +34,43 @@ Murmur3 is a fast, non-cryptographic hash function.
 
 # Benchmarks
 
+### Summary
+
+According to current testing (and excluding `FxHasher`):
+
+- `fastmurmur3` is the fastest.
+- `xxh3_64` is 1.66x slower and only has a 64-bit value.
+- `xxh3_128` is 2.50x slower.
+- `fasthash` contains the next fastest murmur3 implementation, but is still 4.47x slower than `fastmurmur3`.
+
+### Data
+
 ```
-sha1                    time:   [202.16 ns 202.75 ns 203.33 ns]
-                        change: [-11.940% -10.505% -9.0308%] (p = 0.00 < 0.05)
-                        Performance has improved.
+rustc_hash::FxHasher    time:   [243.91 ps 244.60 ps 245.30 ps]
 
-fastmurmur3             time:   [10.463 ns 10.501 ns 10.540 ns]
-                        change: [-14.418% -12.927% -11.468%] (p = 0.00 < 0.05)
-                        Performance has improved.
-
-murmur3c                time:   [14.760 ns 14.856 ns 14.957 ns]
-                        change: [-3.7754% -2.6999% -1.6890%] (p = 0.00 < 0.05)
-                        Performance has improved.
-
-fasthash                time:   [13.950 ns 14.002 ns 14.055 ns]
-                        change: [-2.1067% -1.2594% -0.1494%] (p = 0.00 < 0.05)
-                        Change within noise threshold.
-
-murmur3                 time:   [26.682 ns 26.781 ns 26.914 ns]
-                        change: [+0.2948% +1.9060% +4.0986%] (p = 0.05 > 0.05)
-                        No change in performance detected.
-
-twox_hash::Xxh3Hash128  time:   [130.32 ns 131.41 ns 132.56 ns]
-
-twox_hash::Xxh3Hash64   time:   [129.68 ns 130.57 ns 131.37 ns]
-
-xxhash_rust::xxh3_64    time:   [5.1691 ns 5.2001 ns 5.2356 ns]
-
-xxhash_rust::xxh3_128   time:   [7.8371 ns 7.8689 ns 7.9027 ns]
+fastmurmur3             time:   [3.0878 ns 3.1215 ns 3.1619 ns]
+xxhash_rust::xxh3_64    time:   [5.1473 ns 5.1872 ns 5.2456 ns]
+xxhash_rust::xxh3_128   time:   [7.8066 ns 7.8271 ns 7.8499 ns]
+fasthash                time:   [13.909 ns 13.960 ns 14.018 ns]
+murmur3c                time:   [14.529 ns 14.604 ns 14.684 ns]
+murmur3                 time:   [26.084 ns 26.163 ns 26.249 ns]
+twox_hash::Xxh3Hash64   time:   [124.23 ns 126.46 ns 128.55 ns]
+twox_hash::Xxh3Hash128  time:   [134.62 ns 136.75 ns 138.77 ns]
+sha1                    time:   [209.55 ns 211.71 ns 214.88 ns]
 ```
 
-For murmur3, fastmurmur3 is the fastest, 1.33x faster than the next best implementation.
+### Benchmark Future Work
 
-However, the xxhash_rust implementation of xxh3hash is the fastest, 2.02x faster than fastmurmur3.
+- These benchmarks are run on a limited input set and with a limited seed. It'd be better to run these benchmarks 
+  on a larger input set and with a larger seed.
+
+- Besides speed, these benchmarks could also measure other important hash properties like collision-resistance. 
+
+- I exclude `FxHash` from the benchmark summary because I don't know if it's been tested for general use beyond
+  the rust compiler. If that has been done, and it proves to be general purpose, 
+  FxHash could be preferable to `fastmurmur3`.
+
+- It'd be nice to have pretty charts of the benchmarks.
 
 # Contributing
 
@@ -77,18 +84,3 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-# Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#top">back to top</a>)</p>

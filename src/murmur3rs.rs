@@ -8,6 +8,7 @@ use fallthrough::{
 };
 
 
+#[inline]
 pub fn hash(data: &[u8]) -> u128 {
     murmur3_x64_128(data, 0)
 }
@@ -22,6 +23,7 @@ macro_rules! test_println {
 }
 
 
+#[inline]
 pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     const C1: u64 = 0x87c3_7b91_1142_53d5;
     const C2: u64 = 0x4cf5_ad43_2745_937f;
@@ -105,7 +107,7 @@ pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     h2 = fmix64(h2);
     h1 = h1.wrapping_add(h2);
     h2 = h2.wrapping_add(h1);
-    ((h2 as u128) << 64) | (h1 as u128)
+    u128::from_ne_bytes(unsafe {*([h1, h2].as_ptr() as *const [u8; 16])})
 }
 
 

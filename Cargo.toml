@@ -20,7 +20,8 @@ keywords = [
 ]
 
 [features]
-"bench"= []
+# You never need this feature. It purely exists for benchmarking and testing purposes.
+"murmur3c"= []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [[bench]]
@@ -31,6 +32,7 @@ harness = false
 [dependencies]
 xxhash-rust = { version = "0.8.2", features = ["xxh3"] }
 twox-hash = "1.6.1"
+rustc-hash = "1.1.0"
 
 [dev-dependencies]
 criterion = "0.3.5"
