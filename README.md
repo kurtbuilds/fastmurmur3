@@ -27,19 +27,43 @@ Murmur3 is a fast, non-cryptographic hash function.
 
 # Installation
 
-# Roadmap
+    cargo install fastmurmur3
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+# Benchmarks
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+```
+sha1                    time:   [202.16 ns 202.75 ns 203.33 ns]
+                        change: [-11.940% -10.505% -9.0308%] (p = 0.00 < 0.05)
+                        Performance has improved.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+fastmurmur3             time:   [10.463 ns 10.501 ns 10.540 ns]
+                        change: [-14.418% -12.927% -11.468%] (p = 0.00 < 0.05)
+                        Performance has improved.
+
+murmur3c                time:   [14.760 ns 14.856 ns 14.957 ns]
+                        change: [-3.7754% -2.6999% -1.6890%] (p = 0.00 < 0.05)
+                        Performance has improved.
+
+fasthash                time:   [13.950 ns 14.002 ns 14.055 ns]
+                        change: [-2.1067% -1.2594% -0.1494%] (p = 0.00 < 0.05)
+                        Change within noise threshold.
+
+murmur3                 time:   [26.682 ns 26.781 ns 26.914 ns]
+                        change: [+0.2948% +1.9060% +4.0986%] (p = 0.05 > 0.05)
+                        No change in performance detected.
+
+twox_hash::Xxh3Hash128  time:   [130.32 ns 131.41 ns 132.56 ns]
+
+twox_hash::Xxh3Hash64   time:   [129.68 ns 130.57 ns 131.37 ns]
+
+xxhash_rust::xxh3_64    time:   [5.1691 ns 5.2001 ns 5.2356 ns]
+
+xxhash_rust::xxh3_128   time:   [7.8371 ns 7.8689 ns 7.9027 ns]
+```
+
+For murmur3, fastmurmur3 is the fastest, 1.33x faster than the next best implementation.
+
+However, the xxhash_rust implementation of xxh3hash is the fastest, 2.02x faster than fastmurmur3.
 
 # Contributing
 
