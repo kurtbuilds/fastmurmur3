@@ -3,7 +3,7 @@ name = "fastmurmur3"
 authors = ["Kurt Wolf <kurtwolfbuilds@gmail.com>"]
 version = "0.1.2"
 edition = "2021"
-description = "Fast murmur3 hash, with the benchmarks to prove it."
+description = "Fast non-cryptographic hash, with the benchmarks to prove it."
 license = "MIT"
 repository = "https://github.com/kurtbuilds/fastmurmur3"
 
