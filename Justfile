@@ -4,6 +4,7 @@ export RUSTFLAGS := "-Lbuild"
 
 bootstrap:
     cargo install checkexec cargo-criterion
+    git submodule update --init --recursive
 
 help:
     @just --list --unsorted
