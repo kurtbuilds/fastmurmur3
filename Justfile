@@ -2,6 +2,9 @@ set dotenv-load := false
 
 export RUSTFLAGS := "-Lbuild"
 
+bootstrap:
+    cargo install checkexec cargo-criterion
+
 help:
     @just --list --unsorted
 
@@ -19,10 +22,7 @@ release:
 install:
     cargo install --path .
 
-bootstrap:
-    cargo install cargo-edit
-
-test *args:
+test *args: build-murmur3c
     cargo test {{args}}
 
 check:
@@ -30,7 +30,7 @@ check:
 alias c := check
 
 bench:
-    cargo criterion
+    cargo criterion --features bench
 
 fix:
     cargo clippy --fix
@@ -53,6 +53,11 @@ patch: test
     just version patch
     just publish
 
+
 build-murmur3c:
+    checkexec -v build/libmurmur3.so murmur3c/murmur3.c -- just _murmur3c
+
+_murmur3c:
     mkdir -p build/
+    cargo clean -p fastmurmur3
     export DIR=$(pwd) && cd murmur3c && gcc -shared -O3 -Wall -fPIC -o $DIR/build/libmurmur3.so -c murmur3.c
