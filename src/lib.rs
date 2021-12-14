@@ -1,4 +1,5 @@
 mod murmur3rs;
+mod fallthrough;
 
 pub use murmur3rs::{hash, murmur3_x64_128};
 

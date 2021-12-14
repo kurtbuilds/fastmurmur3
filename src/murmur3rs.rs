@@ -1,6 +1,6 @@
 #![allow(unreachable_code)]
 use std::ops::Shl;
-use fallthrough::{
+use crate::{
     match_fallthrough,
     match_fallthrough_reverse_branches,
     match_fallthrough_make_loops,

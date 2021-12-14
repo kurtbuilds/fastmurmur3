@@ -53,7 +53,6 @@ patch: test
     just version patch
     just publish
 
-
 build-murmur3c:
     checkexec -v build/libmurmur3.so murmur3c/murmur3.c -- just _murmur3c
 

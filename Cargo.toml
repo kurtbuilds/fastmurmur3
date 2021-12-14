@@ -20,7 +20,8 @@ keywords = [
 ]
 
 [features]
-# You never need this feature. It purely exists for benchmarking and testing purposes.
+# Link the C library for murmur3. You likely never need this feature.
+# It exists purely for benchmarking and testing purposes.
 "murmur3c"= []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -30,9 +31,6 @@ path = "bench/bench.rs"
 harness = false
 
 [dependencies]
-xxhash-rust = { version = "0.8.2", features = ["xxh3"] }
-twox-hash = "1.6.1"
-rustc-hash = "1.1.0"
 
 [dev-dependencies]
 criterion = "0.3.5"
@@ -40,7 +38,6 @@ murmur3 = "0.5.1"
 sha-1 = "0.10.0"
 rand = "0.8.4"
 fasthash = "0.4.0"
-
-[dependencies.fallthrough]
-git = "https://github.com/pythonesque/fallthrough"
-version = "0.0.1"
+xxhash-rust = { version = "0.8.2", features = ["xxh3"] }
+twox-hash = "1.6.1"
+rustc-hash = "1.1.0"

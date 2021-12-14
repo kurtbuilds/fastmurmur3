@@ -222,11 +222,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
-name = "fallthrough"
-version = "0.0.1"
-source = "git+https://github.com/pythonesque/fallthrough#3d6fa8e5b2bfa8fd2bd03c3eb6b8abf6aabfce13"
-
-[[package]]
 name = "fasthash"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -253,7 +248,6 @@ name = "fastmurmur3"
 version = "0.1.1"
 dependencies = [
  "criterion",
- "fallthrough",
  "fasthash",
  "murmur3",
  "rand 0.8.4",
