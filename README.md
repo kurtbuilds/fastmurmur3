@@ -21,7 +21,7 @@
 
 # Fastmurmur3
 
-Murmur3 is a fast, non-cryptographic hash function. Fastmurmur3 is, in my testing, the fastest implementation of Murmur3.
+Murmur3 is a fast, non-cryptographic hash function. `fastmurmur3` is, in my testing, the fastest implementation of Murmur3.
 
 # Usage
 
@@ -36,7 +36,7 @@ Murmur3 is a fast, non-cryptographic hash function. Fastmurmur3 is, in my testin
 
 ### Summary
 
-According to current testing (and excluding `FxHasher`):
+According to current benchmarks (and excluding `FxHasher`):
 
 - `fastmurmur3` is the fastest.
 - `xxh3_64` is 1.66x slower and only has a 64-bit value.
@@ -61,16 +61,19 @@ sha1                    time:   [209.55 ns 211.71 ns 214.88 ns]
 
 ### Benchmark Future Work
 
-- These benchmarks are run on a limited input set and with a limited seed. It'd be better to run these benchmarks 
-  on a larger input set and with a larger seed.
+- [ ] These benchmarks are run on a limited input set and with a limited seed set. These more extensive benchmarks need to happen before definitively making the claim that `fastmurmur3` is the fastest non-cryptographic hash function.
 
-- Besides speed, these benchmarks could also measure other important hash properties like collision-resistance. 
+- [ ] Besides speed, these benchmarks could also measure other important hash properties like collision-resistance in comparison to other algorithms (`xxhash`, etc.). 
 
-- I exclude `FxHash` from the benchmark summary because I don't know if it's been tested for general use beyond
+- [ ] I exclude `FxHash` from the benchmark summary because I don't know if it's been tested for general use beyond
   the rust compiler. If that has been done, and it proves to be general purpose, 
   FxHash could be preferable to `fastmurmur3`.
 
-- It'd be nice to have pretty charts of the benchmarks.
+- [ ] It'd be nice to have pretty charts of the benchmarks.
+
+# Correctness
+
+The tests for `fastmurmur3` perform fuzzing in comparison to the C implementation.
 
 # Contributing
 
