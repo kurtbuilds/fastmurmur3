@@ -49,12 +49,6 @@ fn criterion_benchmark(c: &mut Criterion) {
     group.bench_function("xxhash_rust::xxh3_128", |b| b.iter(||
         xxhash_rust::xxh3::xxh3_128(SOURCE)
     ));
-    group.bench_function("rustc_hash", |b| b.iter(|| {
-        let mut h = rustc_hash::FxHasher::default();
-        h.write(SOURCE);
-        h.finish()
-    }));
-
     group.finish();
 }
 

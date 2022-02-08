@@ -36,7 +36,7 @@ Murmur3 is a fast, non-cryptographic hash function. `fastmurmur3` is, in my test
 
 ### Summary
 
-According to current benchmarks (and excluding `FxHasher`):
+According to current benchmarks:
 
 - `fastmurmur3` is the fastest.
 - `xxh3_64` is 1.66x slower and only has a 64-bit value.
@@ -46,8 +46,6 @@ According to current benchmarks (and excluding `FxHasher`):
 ### Data
 
 ```
-rustc_hash::FxHasher    time:   [243.91 ps 244.60 ps 245.30 ps]
-
 fastmurmur3             time:   [3.0878 ns 3.1215 ns 3.1619 ns]
 xxhash_rust::xxh3_64    time:   [5.1473 ns 5.1872 ns 5.2456 ns]
 xxhash_rust::xxh3_128   time:   [7.8066 ns 7.8271 ns 7.8499 ns]
@@ -63,13 +61,16 @@ sha1                    time:   [209.55 ns 211.71 ns 214.88 ns]
 
 - [ ] These benchmarks are run on a limited input set and with a limited seed set. These more extensive benchmarks need to happen before definitively making the claim that `fastmurmur3` is the fastest non-cryptographic hash function.
 
-- [ ] Besides speed, these benchmarks could also measure other important hash properties like collision-resistance in comparison to other algorithms (`xxhash`, etc.). 
+- [ ] I'm not sure if these benchmarks are unfair to the reference C implementation because of linkage (i.e. rust function gets fully inlined, whereas C implementation stays as a separate fn call because of linking algorithm).
 
-- [ ] I exclude `FxHash` from the benchmark summary because I don't know if it's been tested for general use beyond
-  the rust compiler. If that has been done, and it proves to be general purpose, 
-  FxHash could be preferable to `fastmurmur3`.
+- [ ] Besides speed, these benchmarks could also measure other hash properties like collision-resistance in comparison to other algorithms (`xxhash`, etc.).
 
 - [ ] It'd be nice to have pretty charts of the benchmarks.
+
+- [ ] I'd like to understand if there's steps I can take to make the benchmarks more reproducible (e.g. setting process priority, failing if it encounters memory contention, etc.)
+
+- [ ] I'd like to improve the benchmarking readout and abstract it into a better comparison tool. Right now, cargo bench and cargo criterion are built for tracking performance of the project over time. I'd like to have a better
+  library for comparing performance within a benchmark group.
 
 # Correctness
 
