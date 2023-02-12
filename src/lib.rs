@@ -1,13 +1,13 @@
-mod murmur3rs;
 mod fallthrough;
+mod murmur3rs;
 
 pub use murmur3rs::{hash, murmur3_x64_128};
 
 #[cfg(feature = "murmur3c")]
 pub mod murmur3c;
 
-
 #[cfg(test)]
+#[cfg(feature = "murmur3c")]
 mod test {
     use super::*;
     use rand::{Rng, RngCore};
@@ -33,13 +33,12 @@ mod test {
             let a = murmur3rs::murmur3_x64_128(&buf, salt);
             let b = murmur3c::murmur3_x64_128(&buf, salt);
             assert_eq!(
-                a, b,
+                a,
+                b,
                 "Failed after {} iterations. salt={} data={}",
                 i,
                 salt,
-                buf.iter()
-                    .map(|b| format!("{:x}", b))
-                    .collect::<String>(),
+                buf.iter().map(|b| format!("{:x}", b)).collect::<String>(),
             );
         }
     }

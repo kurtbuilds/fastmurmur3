@@ -1,27 +1,14 @@
 #![allow(unreachable_code)]
-use std::ops::Shl;
 use crate::{
-    match_fallthrough,
+    match_fallthrough, match_fallthrough_make_loops, match_fallthrough_make_match,
     match_fallthrough_reverse_branches,
-    match_fallthrough_make_loops,
-    match_fallthrough_make_match
 };
-
+use std::ops::Shl;
 
 #[inline]
 pub fn hash(data: &[u8]) -> u128 {
     murmur3_x64_128(data, 0)
 }
-
-/// This macro only prints if we're in test mode.
-macro_rules! test_println {
-    ($($arg:tt)*) => {
-        if cfg!(test) {
-            println!($($arg)*)
-        }
-    }
-}
-
 
 #[inline]
 pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
@@ -42,12 +29,10 @@ pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     let mut h2: u64 = salt as u64;
 
     for slice in data[..full_block_len].chunks(BLOCK_SIZE) {
-        let k1 = u64::from_le_bytes(unsafe {*(
-            slice.as_ptr() as *const [u8; HALF_BLOCK_SIZE]
-        )});
-        let k2 = u64::from_le_bytes(unsafe {*(
-            slice.as_ptr().offset(HALF_BLOCK_SIZE as isize) as *const [u8; HALF_BLOCK_SIZE]
-        )});
+        let k1 = u64::from_le_bytes(unsafe { *(slice.as_ptr() as *const [u8; HALF_BLOCK_SIZE]) });
+        let k2 = u64::from_le_bytes(unsafe {
+            *(slice.as_ptr().add(HALF_BLOCK_SIZE) as *const [u8; HALF_BLOCK_SIZE])
+        });
         h1 ^= k1.wrapping_mul(C1).rotate_left(R2).wrapping_mul(C2);
         h1 = h1
             .rotate_left(R1)
@@ -107,14 +92,12 @@ pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     h2 = fmix64(h2);
     h1 = h1.wrapping_add(h2);
     h2 = h2.wrapping_add(h1);
-    u128::from_ne_bytes(unsafe {*([h1, h2].as_ptr() as *const [u8; 16])})
+    u128::from_ne_bytes(unsafe { *([h1, h2].as_ptr() as *const [u8; 16]) })
 }
-
 
 trait XorShift {
     fn xor_shr(&self, shift: u32) -> Self;
 }
-
 
 impl XorShift for u64 {
     fn xor_shr(&self, shift: u32) -> Self {
@@ -122,13 +105,11 @@ impl XorShift for u64 {
     }
 }
 
-
 fn fmix64(k: u64) -> u64 {
     const C1: u64 = 0xff51_afd7_ed55_8ccd;
     const C2: u64 = 0xc4ce_b9fe_1a85_ec53;
     const R: u32 = 33;
-    k
-        .xor_shr(R)
+    k.xor_shr(R)
         .wrapping_mul(C1)
         .xor_shr(R)
         .wrapping_mul(C2)

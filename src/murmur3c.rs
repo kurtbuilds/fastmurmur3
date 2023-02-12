@@ -13,7 +13,12 @@ extern "C" {
 pub fn hash(data: &[u8]) -> u128 {
     let mut buf = [0u8; 16];
     unsafe {
-        MurmurHash3_x64_128(data.as_ptr() as *const c_void, data.len() as i32, 0, &mut buf as *mut _ as *mut c_void);
+        MurmurHash3_x64_128(
+            data.as_ptr() as *const c_void,
+            data.len() as i32,
+            0,
+            &mut buf as *mut _ as *mut c_void,
+        );
     }
     if cfg!(target_endian = "big") {
         u128::from_be_bytes(buf)
@@ -22,12 +27,16 @@ pub fn hash(data: &[u8]) -> u128 {
     }
 }
 
-
 #[cfg(target_pointer_width = "64")]
 pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     let mut buf = [0u8; 16];
     unsafe {
-        MurmurHash3_x64_128(data.as_ptr() as *const c_void, data.len() as i32, salt, &mut buf as *mut _ as *mut c_void);
+        MurmurHash3_x64_128(
+            data.as_ptr() as *const c_void,
+            data.len() as i32,
+            salt,
+            &mut buf as *mut _ as *mut c_void,
+        );
     }
     if cfg!(target_endian = "big") {
         u128::from_be_bytes(buf)
