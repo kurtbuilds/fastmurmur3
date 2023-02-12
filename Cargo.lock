@@ -249,6 +249,7 @@ version = "0.1.2"
 dependencies = [
  "criterion",
  "fasthash",
+ "highway",
  "murmur3",
  "rand 0.8.4",
  "rustc-hash",
@@ -304,6 +305,12 @@ checksum = "62b467343b94ba476dcb2500d242dadbb39557df889310ac77c5d99100aaac33"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "highway"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1489f81ead4b71a09ddeab6850c0356c0932587637d753f21ee1010ab875b013"
 
 [[package]]
 name = "itertools"
