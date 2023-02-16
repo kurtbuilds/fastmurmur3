@@ -1,12 +1,12 @@
-use criterion::{BenchmarkId, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 #[cfg(feature = "fasthash")]
 use fasthash::murmur3::Hash128_x64;
 #[cfg(feature = "fasthash")]
 use fasthash::FastHash;
 use highway::HighwayHash;
+use rand::RngCore;
 use std::hash::Hasher;
 use std::io::Cursor;
-use rand::RngCore;
 
 fn sha1(data: &[u8]) -> [u8; 20] {
     use sha1::{Digest, Sha1};
@@ -17,7 +17,9 @@ fn sha1(data: &[u8]) -> [u8; 20] {
 fn criterion_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("hashes");
 
-    for size in [16, 20, 32, 40, 64, 70, 128, 130, 256, 260, 512, 520, 1024, 1030, 2048, 2050, 4096, 5500] {
+    for size in [
+        16, 20, 32, 40, 64, 70, 128, 130, 256, 260, 512, 520, 1024, 1030, 2048, 2050, 4096, 5500,
+    ] {
         let mut rng = rand::thread_rng();
         let mut buf = vec![0; size];
         rng.fill_bytes(&mut buf);
@@ -85,6 +87,28 @@ fn criterion_benchmark(c: &mut Criterion) {
             &size,
             |b, _size| b.iter(|| highway::HighwayHasher::default().hash128(&buf)),
         );
+
+        group.bench_with_input(BenchmarkId::new("fnv", size), &size, |b, _size| {
+            b.iter(|| {
+                let mut hasher = fnv::FnvHasher::default();
+                hasher.write(&buf);
+                hasher.finish()
+            })
+        });
+
+        group.bench_with_input(BenchmarkId::new("crc32", size), &size, |b, _size| {
+            b.iter(|| {
+                let hasher = crc::Crc::<u32>::new(&crc::CRC_32_ISCSI);
+                hasher.checksum(&buf)
+            })
+        });
+
+        group.bench_with_input(BenchmarkId::new("crc64", size), &size, |b, _size| {
+            b.iter(|| {
+                let hasher = crc::Crc::<u64>::new(&crc::CRC_64_ECMA_182);
+                hasher.checksum(&buf)
+            })
+        });
     }
 
     group.finish();
