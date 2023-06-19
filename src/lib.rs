@@ -30,7 +30,7 @@ mod test {
             let mut buf = vec![0; len as usize];
             rng.fill_bytes(&mut buf[..]);
             let salt: u32 = rng.gen();
-            let a = murmur3rs::murmur3_x64_128(&buf, salt);
+            let a = murmur3rs::murmur3_x64_128(&buf, salt as u64);
             let b = murmur3c::murmur3_x64_128(&buf, salt);
             assert_eq!(
                 a, b,
