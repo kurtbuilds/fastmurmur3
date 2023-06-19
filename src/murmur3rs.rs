@@ -24,7 +24,7 @@ macro_rules! test_println {
 
 
 #[inline]
-pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
+pub fn murmur3_x64_128(data: &[u8], seed: u64) -> u128 {
     const C1: u64 = 0x87c3_7b91_1142_53d5;
     const C2: u64 = 0x4cf5_ad43_2745_937f;
     const C3: u64 = 0x52dc_e729;
@@ -38,8 +38,8 @@ pub fn murmur3_x64_128(data: &[u8], salt: u32) -> u128 {
     let len = data.len();
     let full_block_len = data.len() / BLOCK_SIZE * BLOCK_SIZE;
 
-    let mut h1: u64 = salt as u64;
-    let mut h2: u64 = salt as u64;
+    let mut h1: u64 = seed;
+    let mut h2: u64 = seed;
 
     for slice in data[..full_block_len].chunks(BLOCK_SIZE) {
         let k1 = u64::from_le_bytes(unsafe {*(
